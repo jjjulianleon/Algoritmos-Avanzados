@@ -28,6 +28,7 @@ python3 -m unittest tests.test_bfs_dummy
 
 `EC[i][j]` es el costo de la arista `V[i] → V[j]`; `null` significa que no hay arista (así `0` queda libre como peso).
 Este algoritmo solo acepta costos enteros positivos (DPV §4.4.1).
+Si `EC[i][j] = EC[j][i]`, la arista no tiene dirección y se crea una sola cadena de dummies de ida y vuelta.
 Opcionalmente se puede indicar `"origen": "S"`; si no se indica, el origen es `V[0]`.
 
 ### Formato de salida

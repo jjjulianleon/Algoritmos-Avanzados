@@ -26,28 +26,46 @@ def construir_g_prima(V, EC):
     EC : matriz de costos; EC[i][j] = costo de la arista V[i] -> V[j], None = no hay arista
          (en el JSON se escribe null). Los costos deben ser enteros positivos.
 
+    Si EC[i][j] = EC[j][i], la arista no tiene dirección y se crea UNA sola cadena
+    de doble sentido (como al dibujar G' con líneas). Si no, cada sentido tiene su
+    propia cadena de un solo sentido.
+
     Devuelve la lista de adyacencia de G': dict {nodo: [vecinos]}.
     """
-    adj = {v: [] for v in V}
-    contador = 0
-
     for i in range(len(V)):
         for j in range(len(V)):
             l = EC[i][j]
-            if l is None:
-                continue
-            if type(l) is not int or l < 1:
+            if l is not None and (type(l) is not int or l < 1):
                 raise ValueError(f"Costo {l} en {V[i]}->{V[j]}: solo se aceptan enteros positivos")
 
-            # cadena V[i] -> d -> d -> ... -> V[j] con l - 1 dummies (DPV p. 119)
-            x = V[i]
-            for _ in range(l - 1):
-                contador += 1
-                d = "d" + str(contador)
-                adj[x].append(d)
-                adj[d] = []
-                x = d
-            adj[x].append(V[j])
+    adj = {v: [] for v in V}
+    contador = 0
+
+    def conectar(a, b, doble):
+        adj[a].append(b)
+        if doble:
+            adj[b].append(a)
+
+    for i in range(len(V)):
+        for j in range(i + 1, len(V)):  # cada par {V[i], V[j]} una sola vez
+            ida, vuelta = EC[i][j], EC[j][i]
+            if ida is not None and ida == vuelta:
+                cadenas = [(V[i], V[j], ida, True)]  # sin dirección: una cadena de ida y vuelta
+            else:
+                cadenas = [(V[i], V[j], ida, False), (V[j], V[i], vuelta, False)]
+
+            for u, v, l, doble in cadenas:
+                if l is None:
+                    continue
+                # cadena u - d - d - ... - v con l - 1 dummies (DPV p. 119)
+                x = u
+                for _ in range(l - 1):
+                    contador += 1
+                    d = "d" + str(contador)
+                    adj[d] = []
+                    conectar(x, d, doble)
+                    x = d
+                conectar(x, v, doble)
 
     return adj
 
