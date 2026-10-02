@@ -21,12 +21,13 @@ python3 -m unittest
 {
     "grafo": {
         "V": ["S", "A", "B", "T"],
-        "EC": [[0, 1, 2, 0], [1, 0, 3, 4], [2, 3, 0, 0], [0, 4, 0, 0]]
+        "EC": [[null, 1, 2, null], [1, null, 3, 4], [2, 3, null, null], [null, 4, null, null]]
     }
 }
 ```
 
-`EC[i][j]` es el costo de la arista `V[i] → V[j]`; `0` significa que no hay arista.
+`EC[i][j]` es el costo de la arista `V[i] → V[j]`; `null` significa que no hay arista (así `0` queda libre como peso).
+Este algoritmo solo acepta costos enteros positivos (DPV §4.4.1).
 Opcionalmente se puede indicar `"origen": "S"`; si no se indica, el origen es `V[0]`.
 
 ### Formato de salida
@@ -39,5 +40,6 @@ Para cada vértice alcanzable: el camino desde el origen y, al final, su costo.
 
 ## Uso de IA
 
-La estructura del repositorio (carpetas, lectura del JSON, test) fue preparada con
-Claude Code. Los algoritmos fueron implementados por el estudiante.
+La estructura del repositorio y la implementación de `bfs_dummy.py` fueron hechas
+con Claude Code (Anthropic), siguiendo DPV §4.2 y §4.4.1. El estudiante revisó y
+entiende el código.
