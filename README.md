@@ -12,7 +12,7 @@ Biblioteca de algoritmos del curso CMP-4007 (USFQ).
 
 ```bash
 python3 -m algoritmos.bfs_dummy ejemplos/grafo_pizarra.json
-python3 -m unittest
+python3 -m unittest tests.test_bfs_dummy
 ```
 
 ### Formato de entrada
