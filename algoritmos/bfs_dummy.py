@@ -12,6 +12,7 @@ Uso:
 
 import json
 import sys
+from pathlib import Path
 from collections import deque  # cola para el BFS: append = inject, popleft = eject
 
 INF = float("inf")
@@ -110,7 +111,9 @@ def resolver(grafo, s):
 
 
 if __name__ == "__main__":
-    with open(sys.argv[1]) as f:
+    # sin argumento (p. ej. botón Run de VS Code) se usa el ejemplo de la pizarra
+    ruta = sys.argv[1] if len(sys.argv) > 1 else Path(__file__).parent.parent / "ejemplos" / "grafo_pizarra.json"
+    with open(ruta) as f:
         datos = json.load(f)
     grafo = datos["grafo"]
     s = datos.get("origen", grafo["V"][0])  # si el JSON no dice origen, se usa el primer vértice
