@@ -117,4 +117,6 @@ if __name__ == "__main__":
         datos = json.load(f)
     grafo = datos["grafo"]
     s = datos.get("origen", grafo["V"][0])  # si el JSON no dice origen, se usa el primer vértice
-    print(json.dumps(resolver(grafo, s), indent=4, ensure_ascii=False))
+    # un vértice por línea: {"T": ["S", "A", "T", 5], ...}
+    lineas = [f"    {json.dumps(v)}: {json.dumps(c, ensure_ascii=False)}" for v, c in resolver(grafo, s).items()]
+    print("{\n" + ",\n".join(lineas) + "\n}")
